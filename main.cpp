@@ -16,6 +16,10 @@ int main(void)
     std::vector<std::pair<std::string, std::function<void(std::vector<std::string>&)>>> Options = {
         { "data", print_data_handler },
         { "word", new_data_add_handler }
+    }; 
+
+    std::vector<Block> BlockChain = {
+        {0, "fromini", 0, 0}
     };
 
     while(1)
