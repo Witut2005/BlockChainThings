@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 
+#pragma once
 class Block{
     private:
         std::string data; 
