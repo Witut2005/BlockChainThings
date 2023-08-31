@@ -20,3 +20,8 @@ auto Block::block_hash_get(void) -> decltype(this->block_hash)
 {
     return this->block_hash;
 }
+
+bool Block::check_logic_puzzle_level_correctness(std::size_t hash, uint32_t logic_puzzle_level)
+{
+    std::bitset<sizeof(std::size_t)>(hash & ((1 << logic_puzzle_level) - 1)).none();
+}

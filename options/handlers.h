@@ -11,7 +11,6 @@
 void new_data_add_handler(std::vector<std::string>& Vec);
 void print_data_handler(const std::vector<std::string>& Vec);
 void new_block_add(std::vector<Block> BlockChain);
-// void print_all_available_options(auto DataOptions, auto BlockChainOptions);
 
 template<class T, class B>
 void print_all_available_options(std::vector<std::pair<std::string, T>> DataOptions, std::vector<std::pair<std::string, B>> BlockChainOptions)
