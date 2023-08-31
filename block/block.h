@@ -17,5 +17,6 @@ class Block{
     auto block_hash_get(void) -> decltype(this->block_hash);
 
     static bool check_logic_puzzle_level_correctness(std::size_t hash, uint32_t logic_puzzle_level);
+    static bool check_nonce_correctness(std::size_t hash, uint32_t nonce);
 
 };

@@ -26,9 +26,7 @@ int main(void)
         {0, "fromini", 0, 0}
     };
 
-
     print_all_available_options(DataOptions, BlockChainOptions);
-
 
     while(1)
     {
