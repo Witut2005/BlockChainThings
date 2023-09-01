@@ -30,3 +30,13 @@ bool Block::check_nonce_correctness(std::size_t hash, uint32_t nonce)
 {
     return std::hash<uint32_t>()(nonce) == hash;
 }
+
+auto Block::nonce_get(void) -> decltype(this->nonce) const
+{
+    return this->nonce;
+}
+
+auto Block::logic_puzzle_level_get(void) -> decltype(this->nonce) const
+{
+    return this->logic_puzzle_level;
+}

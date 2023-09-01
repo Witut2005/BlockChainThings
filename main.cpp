@@ -21,9 +21,10 @@ int main(void)
 
     std::vector<std::pair<std::string, std::function<void(std::vector<Block>&)>>> BlockChainOptions = {
         { "add", new_block_add},
+        // {"print_blocks", }
     }; 
 
-    BlockChain<Block> BlockChain = {
+    BlockChain BlockChain = {
         {0, "fromini", 0, 0}
     };
 

@@ -1,16 +1,18 @@
 
 #include <bits/stdc++.h>
+#include "../block/block.h"
 
-template<typename T>
-class BlockChain : public std::vector<T>
+// template<typename T>
+class BlockChain : public std::vector<Block>
 {
-    using riterator =  typename std::vector<T>::reverse_iterator; 
-    using iterator =  typename std::vector<T>::iterator; 
+    using riterator =  typename std::vector<Block>::reverse_iterator; 
+    using iterator =  typename std::vector<Block>::iterator; 
 
-    // iterator begin() = delete;
-    // riterator rend() = delete;
+    iterator begin() = delete;
+    riterator rend() = delete;
 
     public:
-    BlockChain(std::initializer_list<T> args) : std::vector<T>(args){};
+    void print_blocks(void);
+    BlockChain(std::initializer_list<Block> args) : std::vector<Block>(args){};
 
 };

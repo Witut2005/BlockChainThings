@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <fmt/core.h>
 
 #pragma once
 class Block{
@@ -15,8 +16,11 @@ class Block{
     auto data_get(void) -> decltype(this->data) const;
     auto previous_block_hash_get(void) -> decltype(this->previous_block_hash) const;
     auto block_hash_get(void) -> decltype(this->block_hash) const;
+    auto nonce_get(void) -> decltype(this->nonce) const;
+    auto logic_puzzle_level_get(void) -> decltype(this->logic_puzzle_level) const;
 
     static bool check_logic_puzzle_level_correctness(std::size_t hash, uint32_t logic_puzzle_level);
     static bool check_nonce_correctness(std::size_t hash, uint32_t nonce);
+
 
 };
