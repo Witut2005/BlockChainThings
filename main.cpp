@@ -6,6 +6,7 @@
 #include <bits/stdc++.h>
 
 #include "./block/block.h"
+#include "./blockchain/blockchain.h"
 #include "./options/handlers.h"
 
 int main(void)
@@ -22,7 +23,7 @@ int main(void)
         { "add", new_block_add},
     }; 
 
-    std::vector<Block> BlockChain = {
+    BlockChain<Block> BlockChain = {
         {0, "fromini", 0, 0}
     };
 
