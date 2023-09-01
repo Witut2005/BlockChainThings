@@ -27,6 +27,8 @@ int main(void)
         {0, "fromini", 0, 0}
     };
 
+    // fmt::print("fro: {}", BlockChain.begin()->block_hash_get());
+
     print_all_available_options(DataOptions, BlockChainOptions);
 
     while(1)
@@ -35,7 +37,6 @@ int main(void)
 
         std::string option_selected;
         std::cin >> option_selected;
-
         
         for(auto option : DataOptions)
         {

@@ -33,9 +33,31 @@ void new_block_add(std::vector<Block> BlockChain)
     fmt::print("Logic puzzle level: ");
     std::cin >> logic_puzzle_level;
 
-    uint32_t nonce;
+    std::random_device RandomDevice;
+    std::mt19937 Twister(RandomDevice());
+
+    std::uniform_int_distribution<uint32_t> Distribution(0, UINT32_MAX);
+
+    uint32_t nonce = Distribution(Twister);
+
+    
+    while(1)
+    {
+        Block BlockToAdd((BlockChain.end() - 1)->block_hash_get(), data, logic_puzzle_level, nonce);
+        
+        if(Block::check_logic_puzzle_level_correctness(BlockToAdd.block_hash_get(), logic_puzzle_level))
+        {
+            std::cout << "Block hash: " << std::bitset<sizeof(std::size_t) * 8>(BlockToAdd.block_hash_get()) << std::endl;
+            break;
+        }
+        
+        
+        nonce = Distribution(Twister);
+    }
+
 
     BlockChain.push_back(Block(BlockChain.rend()->block_hash_get(), data, logic_puzzle_level, nonce));
+    fmt::print(fg(fmt::color::green), "Block added\n");
 }
 
 
