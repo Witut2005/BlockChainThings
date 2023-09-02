@@ -21,6 +21,7 @@ int main(void)
 
     std::vector<std::pair<std::string, std::function<void(BlockChain_t&)>>> BlockChainOptions = {
         { "add", new_block_add},
+        {"modify", blockchain_block_modify},
         {"print_blocks", blockchain_blocks_print}
     }; 
 
@@ -35,9 +36,7 @@ int main(void)
     while(1)
     {
         fmt::print("\nYour option: ");
-
         std::string option_selected;
-        // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\0');
 
         fflush(stdin);
 

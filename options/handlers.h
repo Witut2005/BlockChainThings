@@ -30,3 +30,4 @@ void print_all_available_options(std::vector<std::pair<std::string, T>> DataOpti
 }
 
 void blockchain_blocks_print(BlockChain_t& BlockChain);
+void blockchain_block_modify(BlockChain_t& BlockChain);

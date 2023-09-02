@@ -66,6 +66,30 @@ void new_block_add(std::vector<Block>& BlockChain)
     
 }
 
+void blockchain_block_modify(BlockChain_t& BlockChain)
+{
+    int block_to_modify;
+
+    fmt::print("block to modify(0 means the newest block): ");
+    std::cin >> block_to_modify; 
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    if(block_to_modify >= BlockChain.size())
+    {
+        fmt::print(fg(fmt::color::red), "invalid block");
+        return;
+    }
+
+    auto it = BlockChain.rbegin() + block_to_modify;
+
+    std::string BlockData;
+    fmt::print("block data (press enter to skip): ");
+    std::getline(std::cin, BlockData);
+
+    if(BlockData.length())
+        it->data_set(BlockData);
+
+}
 
 void blockchain_blocks_print(BlockChain_t& BlockChain)
 {
@@ -159,8 +183,6 @@ void blockchain_blocks_print(BlockChain_t& BlockChain)
             fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red),"-");
         fmt::print("\n");
 
-
-        // fmt::print("Block: {:X} {:X} {:X} {:X} {}\n----------------------------\n", CurrentBlock->block_hash_get(), CurrentBlock->previous_block_hash_get(), CurrentBlock->nonce_get(), CurrentBlock->logic_puzzle_level_get(), CurrentBlock->data_get());
 
         if(!CurrentBlock->previous_block_hash_get())
             break;

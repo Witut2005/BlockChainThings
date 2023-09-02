@@ -11,6 +11,11 @@ auto Block::data_get(void) -> decltype(this->data) const
     return this->data; 
 }
 
+void Block::data_set(const std::string& data)
+{
+    this->data = data;
+}
+
 auto Block::previous_block_hash_get(void) -> decltype(this->previous_block_hash) const
 {
     return this->previous_block_hash;

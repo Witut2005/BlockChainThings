@@ -15,6 +15,9 @@ class BlockChain_t : public std::vector<Block>
 
     public:
     void print_blocks(void);
+    int first_invalid_block_id_get(void) const;
     BlockChain_t(std::initializer_list<Block> args) : std::vector<Block>(args){};
+    
+    friend void blockchain_block_modify(BlockChain_t& BlockChain);
 
 };
