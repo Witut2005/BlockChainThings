@@ -204,4 +204,10 @@ void blockchain_blocks_print(BlockChain_t& BlockChain)
 
         CurrentBlock++;
     }
+    
+    if(BlockChain.first_invalid_block_id_get() != -1)
+    {
+        fmt::print(fg(fmt::color::red), "INVALID BLOCK ID: {}\nBLOCKCHAIN IS CORRUPTED", BlockChain.first_invalid_block_id_get());
+    }
+
 }

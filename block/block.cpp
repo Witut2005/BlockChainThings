@@ -16,12 +16,12 @@ void Block::data_set(const std::string& data)
     this->data = data;
 }
 
-auto Block::previous_block_hash_get(void) -> decltype(this->previous_block_hash) const
+auto Block::previous_block_hash_get(void) const -> decltype(this->previous_block_hash) 
 {
     return this->previous_block_hash;
 }
 
-auto Block::block_hash_get(void) -> decltype(this->block_hash) const
+auto Block::block_hash_get(void) const -> decltype(this->block_hash)
 {
     return this->block_hash;
 }
@@ -48,6 +48,5 @@ auto Block::calculate_block_hash_from_internal_data(void) const -> decltype(this
 
 bool Block::is_valid(void) const
 {
-    return(this->calculate_block_hash_from_internal_data() == this->block_hash) & 
-        (this->check_logic_puzzle_level_correctness(this->block_hash, this->logic_puzzle_level));
+    return(this->calculate_block_hash_from_internal_data() == this->block_hash) & (this->check_logic_puzzle_level_correctness(this->block_hash, this->logic_puzzle_level));
 }
