@@ -1,7 +1,8 @@
 
 #include "./blockchain.h"
+#include "../block/block.h"
 
-void BlockChain::print_blocks(void) 
+void BlockChain_t::print_blocks(void) 
 {
     auto CurrentBlock = this->rbegin();
 

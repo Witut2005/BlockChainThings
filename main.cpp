@@ -19,12 +19,12 @@ int main(void)
         { "word", new_data_add_handler }
     }; 
 
-    std::vector<std::pair<std::string, std::function<void(std::vector<Block>&)>>> BlockChainOptions = {
+    std::vector<std::pair<std::string, std::function<void(BlockChain_t&)>>> BlockChainOptions = {
         { "add", new_block_add},
-        // {"print_blocks", }
+        {"print_blocks", blockchain_blocks_print}
     }; 
 
-    BlockChain BlockChain = {
+    BlockChain_t BlockChain = {
         {0, "fromini", 0, 0}
     };
 

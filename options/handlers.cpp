@@ -21,7 +21,7 @@ void print_data_handler(const std::vector<std::string>& Data)
     fmt::print("\ndata: {}\n", Data);
 }
 
-void new_block_add(std::vector<Block> BlockChain)
+void new_block_add(std::vector<Block>& BlockChain)
 {
 
     std::string data;
@@ -43,21 +43,130 @@ void new_block_add(std::vector<Block> BlockChain)
     
     while(1)
     {
-        Block BlockToAdd((BlockChain.end() - 1)->block_hash_get(), data, logic_puzzle_level, nonce);
+        Block BlockToAdd(BlockChain.rbegin()->block_hash_get(), data, logic_puzzle_level, nonce);
         
         if(Block::check_logic_puzzle_level_correctness(BlockToAdd.block_hash_get(), logic_puzzle_level))
         {
             std::cout << "Block hash: " << std::bitset<sizeof(std::size_t) * 8>(BlockToAdd.block_hash_get()) << std::endl;
             break;
         }
-        
-        
         nonce = Distribution(Twister);
     }
 
-
-    BlockChain.push_back(Block(BlockChain.rend()->block_hash_get(), data, logic_puzzle_level, nonce));
+    BlockChain.push_back(Block(BlockChain.rbegin()->block_hash_get(), data, logic_puzzle_level, nonce));
     fmt::print(fg(fmt::color::green), "Block added\n");
+
 }
 
 
+void blockchain_blocks_print(BlockChain_t& BlockChain)
+{
+    auto CurrentBlock = BlockChain.rbegin();
+
+    fmt::print("\n");
+
+    while(1)
+    {
+        int data_length = CurrentBlock->data_get().length() > 40 ? CurrentBlock->data_get().length() : 40;
+
+        for(int i = 0; i < data_length + 2; i++)
+            fmt::print("-");
+        fmt::print("\n");
+
+        /////////////////////////BLOCK HASH///////////////////////////////
+
+        {
+            std::stringstream ss;
+            ss << std::string("block hash: ") << "0x" << std::hex << CurrentBlock->block_hash_get();
+            fmt::print("|");
+            fmt::print("{}", ss.str());
+
+            for(int i = 0; i < int(data_length - ss.str().length()); i++) // UNOPTIMIZED
+                fmt::print(" ");
+
+            fmt::print("|\n");
+        }
+
+        /////////////////////PREVIOUS BLOCK HASH//////////////////////////
+        {
+            std::stringstream ss;
+            ss << std::string("previous block hash: ") << "0x" << std::hex << CurrentBlock->previous_block_hash_get();
+            fmt::print("|");
+            fmt::print("{}", ss.str()); 
+
+            for(int i = 0; i < int(data_length - ss.str().length()); i++) // UNOPTIMIZED
+                fmt::print(" ");
+
+            fmt::print("|\n");
+        }
+
+        /////////////////////////////NONCE///////////////////////////////
+        {
+            std::stringstream ss;
+            ss << std::string("nonce: ") << "0x" <<  std::hex << CurrentBlock->nonce_get();
+            fmt::print("|");
+            fmt::print("{}", ss.str()); 
+
+            for(int i = 0; i < int(data_length - ss.str().length()); i++) // UNOPTIMIZED
+                fmt::print(" ");
+
+            fmt::print("|\n");
+        }
+
+        ///////////////////////LOGIC PUZZLE LEVEL////////////////////////
+        {
+            std::stringstream ss;
+            ss << std::string("logic puzzle level: ") << std::dec << CurrentBlock->logic_puzzle_level_get();
+            fmt::print("|");
+            fmt::print("{}", ss.str()); 
+
+            for(int i = 0; i < int(data_length - ss.str().length()); i++) // UNOPTIMIZED
+                fmt::print(" ");
+
+            fmt::print("|\n");
+        }
+
+        ////////////////////////////////////////////////////////////////
+
+        {
+            std::stringstream ss;
+            ss << std::string("data: ") << CurrentBlock->data_get();
+            fmt::print("|");
+            fmt::print("{}", ss.str()); 
+
+            for(int i = 0; i < int(data_length - ss.str().length()); i++) // UNOPTIMIZED
+                fmt::print(" ");
+
+            fmt::print("|\n");
+        }
+
+        ////////////////////////////////////////////////////////////////
+
+        for(int i = 0; i < data_length + 2; i++)
+            fmt::print("-");
+        fmt::print("\n");
+
+
+        // fmt::print("Block: {:X} {:X} {:X} {:X} {}\n----------------------------\n", CurrentBlock->block_hash_get(), CurrentBlock->previous_block_hash_get(), CurrentBlock->nonce_get(), CurrentBlock->logic_puzzle_level_get(), CurrentBlock->data_get());
+
+        if(!CurrentBlock->previous_block_hash_get())
+            break;
+
+        const char* arrow = "^|||||";
+
+        for(int i = 0; i < sizeof(arrow) - 2; i++)
+        {
+            for(int i = 0; i < data_length / 2; i++)
+                fmt::print(" ");
+
+            fmt::print("{}", arrow[i]);
+
+            for(int i = 0; i < data_length / 2; i++)
+                fmt::print(" ");
+
+            fmt::print("\n");
+        }
+
+        CurrentBlock++;
+    }
+}

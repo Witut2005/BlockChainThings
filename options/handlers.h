@@ -7,10 +7,11 @@
 #include <bits/stdc++.h>
 
 #include "../block/block.h"
+#include "../blockchain/blockchain.h"
 
 void new_data_add_handler(std::vector<std::string>& Vec);
 void print_data_handler(const std::vector<std::string>& Vec);
-void new_block_add(std::vector<Block> BlockChain);
+void new_block_add(std::vector<Block>& BlockChain);
 
 template<class T, class B>
 void print_all_available_options(std::vector<std::pair<std::string, T>> DataOptions, std::vector<std::pair<std::string, B>> BlockChainOptions)
@@ -27,3 +28,5 @@ void print_all_available_options(std::vector<std::pair<std::string, T>> DataOpti
         fmt::print("{}\n", option.first);
     }
 }
+
+void blockchain_blocks_print(BlockChain_t& BlockChain);
