@@ -37,7 +37,7 @@ int main(void)
         fmt::print("\nYour option: ");
 
         std::string option_selected;
-        std::cin >> option_selected;
+        std::getline(std::cin, option_selected);
         
         for(auto option : DataOptions)
         {
@@ -57,7 +57,7 @@ int main(void)
             }
         }
 
-        fmt::print(fg(fmt::color::red), "no such option\n");
+        fmt::print(fg(fmt::color::red), "no such option: {}\n", option_selected);
 
         end:
         continue;

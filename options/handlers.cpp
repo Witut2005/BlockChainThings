@@ -28,7 +28,7 @@ void new_block_add(std::vector<Block>& BlockChain)
     uint32_t logic_puzzle_level;
 
     fmt::print("Block data: ");
-    std::cin >> data;
+    std::getline(std::cin, data);
     
     fmt::print("Logic puzzle level: ");
     std::cin >> logic_puzzle_level;
@@ -69,8 +69,10 @@ void blockchain_blocks_print(BlockChain_t& BlockChain)
     {
         int data_length = CurrentBlock->data_get().length() > 40 ? CurrentBlock->data_get().length() : 40;
 
+        bool is_valid = CurrentBlock->is_valid();
+
         for(int i = 0; i < data_length + 2; i++)
-            fmt::print("-");
+            fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red), "-");
         fmt::print("\n");
 
         /////////////////////////BLOCK HASH///////////////////////////////
@@ -78,52 +80,52 @@ void blockchain_blocks_print(BlockChain_t& BlockChain)
         {
             std::stringstream ss;
             ss << std::string("block hash: ") << "0x" << std::hex << CurrentBlock->block_hash_get();
-            fmt::print("|");
+            fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red),"|");
             fmt::print("{}", ss.str());
 
             for(int i = 0; i < int(data_length - ss.str().length()); i++) // UNOPTIMIZED
                 fmt::print(" ");
 
-            fmt::print("|\n");
+            fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red), "|\n");
         }
 
         /////////////////////PREVIOUS BLOCK HASH//////////////////////////
         {
             std::stringstream ss;
             ss << std::string("previous block hash: ") << "0x" << std::hex << CurrentBlock->previous_block_hash_get();
-            fmt::print("|");
+            fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red),"|");
             fmt::print("{}", ss.str()); 
 
             for(int i = 0; i < int(data_length - ss.str().length()); i++) // UNOPTIMIZED
                 fmt::print(" ");
 
-            fmt::print("|\n");
+            fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red), "|\n");
         }
 
         /////////////////////////////NONCE///////////////////////////////
         {
             std::stringstream ss;
             ss << std::string("nonce: ") << "0x" <<  std::hex << CurrentBlock->nonce_get();
-            fmt::print("|");
+            fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red),"|");
             fmt::print("{}", ss.str()); 
 
             for(int i = 0; i < int(data_length - ss.str().length()); i++) // UNOPTIMIZED
                 fmt::print(" ");
 
-            fmt::print("|\n");
+            fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red), "|\n");
         }
 
         ///////////////////////LOGIC PUZZLE LEVEL////////////////////////
         {
             std::stringstream ss;
             ss << std::string("logic puzzle level: ") << std::dec << CurrentBlock->logic_puzzle_level_get();
-            fmt::print("|");
+            fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red),"|");
             fmt::print("{}", ss.str()); 
 
             for(int i = 0; i < int(data_length - ss.str().length()); i++) // UNOPTIMIZED
                 fmt::print(" ");
 
-            fmt::print("|\n");
+            fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red), "|\n");
         }
 
         ////////////////////////////////////////////////////////////////
@@ -131,19 +133,19 @@ void blockchain_blocks_print(BlockChain_t& BlockChain)
         {
             std::stringstream ss;
             ss << std::string("data: ") << CurrentBlock->data_get();
-            fmt::print("|");
+            fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red),"|");
             fmt::print("{}", ss.str()); 
 
             for(int i = 0; i < int(data_length - ss.str().length()); i++) // UNOPTIMIZED
                 fmt::print(" ");
 
-            fmt::print("|\n");
+            fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red), "|\n");
         }
 
         ////////////////////////////////////////////////////////////////
 
         for(int i = 0; i < data_length + 2; i++)
-            fmt::print("-");
+            fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red),"-");
         fmt::print("\n");
 
 
