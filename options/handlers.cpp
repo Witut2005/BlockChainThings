@@ -25,13 +25,21 @@ void new_block_add(std::vector<Block>& BlockChain)
 {
 
     std::string data;
-    uint32_t logic_puzzle_level;
+    uint32_t logic_puzzle_level = 0;
 
     fmt::print("Block data: ");
     std::getline(std::cin, data);
     
     fmt::print("Logic puzzle level: ");
-    std::cin >> logic_puzzle_level;
+        
+    while(!(std::cin >> logic_puzzle_level))
+    {
+        fmt::print(fg(fmt::color::red), "invalid input\n");
+        fmt::print("Logic puzzle level: ");
+
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
 
     std::random_device RandomDevice;
     std::mt19937 Twister(RandomDevice());
@@ -55,7 +63,7 @@ void new_block_add(std::vector<Block>& BlockChain)
 
     BlockChain.push_back(Block(BlockChain.rbegin()->block_hash_get(), data, logic_puzzle_level, nonce));
     fmt::print(fg(fmt::color::green), "Block added\n");
-
+    
 }
 
 
@@ -64,10 +72,13 @@ void blockchain_blocks_print(BlockChain_t& BlockChain)
     auto CurrentBlock = BlockChain.rbegin();
 
     fmt::print("\n");
+    int data_length = 0;
 
     while(1)
     {
-        int data_length = CurrentBlock->data_get().length() > 40 ? CurrentBlock->data_get().length() : 40;
+        // data_length = CurrentBlock->data_get().length() > 40 ? CurrentBlock->data_get().length() : 40;
+        data_length = data_length > (std::string("data: ") + CurrentBlock->data_get()).length() ? 
+            data_length : ((std::string("data: ") + CurrentBlock->data_get()).length() > 40) ? (std::string("data: ") + CurrentBlock->data_get()).length()  : 40;
 
         bool is_valid = CurrentBlock->is_valid();
 
@@ -128,7 +139,7 @@ void blockchain_blocks_print(BlockChain_t& BlockChain)
             fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red), "|\n");
         }
 
-        ////////////////////////////////////////////////////////////////
+        //////////////////////////////DATA///////////////////////////////
 
         {
             std::stringstream ss;

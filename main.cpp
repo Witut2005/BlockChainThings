@@ -37,8 +37,12 @@ int main(void)
         fmt::print("\nYour option: ");
 
         std::string option_selected;
+        // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\0');
+
+        fflush(stdin);
+
         std::getline(std::cin, option_selected);
-        
+
         for(auto option : DataOptions)
         {
             if(option_selected == option.first)
@@ -60,6 +64,7 @@ int main(void)
         fmt::print(fg(fmt::color::red), "no such option: {}\n", option_selected);
 
         end:
+        option_selected.clear();
         continue;
     }
 
