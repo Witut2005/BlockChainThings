@@ -6,7 +6,7 @@ Block::Block(std::size_t previous_block_hash, std::string data, uint32_t logic_p
     this->block_hash = std::hash<std::string>()(std::to_string(previous_block_hash) + " " + data + " " + std::to_string(logic_puzzle_level) + " " + std::to_string(nonce));
 }
 
-auto Block::data_get(void) -> decltype(this->data) const
+auto Block::data_get(void) const -> decltype(this->data) 
 {
     return this->data; 
 }
@@ -31,12 +31,12 @@ bool Block::check_logic_puzzle_level_correctness(std::size_t hash, uint32_t logi
     return std::bitset<sizeof(std::size_t) * 8>(hash & ((1 << logic_puzzle_level) - 1)).none();
 }
 
-auto Block::nonce_get(void) -> decltype(this->nonce) const
+auto Block::nonce_get(void) const -> decltype(this->nonce) 
 {
     return this->nonce;
 }
 
-auto Block::logic_puzzle_level_get(void) -> decltype(this->nonce) const
+auto Block::logic_puzzle_level_get(void) const -> decltype(this->nonce) 
 {
     return this->logic_puzzle_level;
 }

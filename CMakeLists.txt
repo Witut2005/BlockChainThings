@@ -12,5 +12,5 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(fmt)
 
-add_executable(block_test main.cpp ./blockchain/blockchain.cpp ./block/block.cpp ./options/handlers.cpp)  # Adding block.cpp
+add_executable(block_test main.cpp ./blockchain/blockchain.cpp ./block/block.cpp ./options/data/handler.cpp ./options/blockchain/handler.cpp)  # Adding block.cpp
 target_link_libraries(block_test PRIVATE fmt::fmt)

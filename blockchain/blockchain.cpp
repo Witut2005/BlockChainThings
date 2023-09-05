@@ -33,5 +33,5 @@ int BlockChain_t::first_invalid_block_id_get(void) const
 
         CurrentBlock++;
     }
-    return -1;
+    return BlockChain_t::NO_INVALID_BLOCKS;
 }
