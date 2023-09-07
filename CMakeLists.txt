@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.11)
 
 project(BlockChainThingsProject)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 include(FetchContent)
 
 FetchContent_Declare(
@@ -13,4 +16,5 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(fmt)
 
 add_executable(block_test main.cpp ./blockchain/blockchain.cpp ./block/block.cpp ./options/data/handler.cpp ./options/blockchain/handler.cpp)  # Adding block.cpp
+
 target_link_libraries(block_test PRIVATE fmt::fmt)

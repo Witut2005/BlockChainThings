@@ -5,20 +5,26 @@
 #include "../block/block.h"
 
 // template<typename T>
-class BlockChain_t : public std::vector<Block>
+class BlockChain_t : public std::unordered_map<std::size_t, Block>
 {
-    using riterator =  typename std::vector<Block>::reverse_iterator; 
-    using iterator =  typename std::vector<Block>::iterator; 
+    using iterator =  typename std::unordered_map<std::size_t, Block>::iterator; 
+    using citerator =  typename std::unordered_map<std::size_t, Block>::const_iterator; 
 
-    iterator begin() = delete;
-    riterator rend() = delete;
+    private:
+        iterator begin();
+        Block LatestBlock;
 
     public:
+    Block latest_block_get(void) const; 
+    Block nth_block_get(uint32_t index) const; // 0 means latest block
+    Block previous_block_get(Block CurrentBlock) const;
     void print_blocks(void);
     int first_invalid_block_id_get(void) const;
-    BlockChain_t(std::initializer_list<Block> args) : std::vector<Block>(args){};
+    void block_add(Block BlockToAdd);
+    BlockChain_t(Block FirstBlock);
     
+    static constexpr int FIRST_BLOCK_PREVIOUS_HASH = -1;
     static constexpr int NO_INVALID_BLOCKS = -1;
-    friend void blockchain_block_modify(BlockChain_t& BlockChain);
 
+    friend void blockchain_block_modify(BlockChain_t& BlockChain);
 };

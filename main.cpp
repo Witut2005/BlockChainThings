@@ -25,14 +25,14 @@ int main(void)
     std::vector<std::pair<std::string, BaseOptionHandler_t<void, BlockChain_t&>>> BlockChainOptions = {
         { "add", BaseOptionHandler_t(handlers::new_block_add) },
         {"modify", BaseOptionHandler_t(handlers::blockchain_block_modify) },
-        {"print_blocks", BaseOptionHandler_t(handlers::blockchain_blocks_print) }
+        {"print_blocks", BaseOptionHandler_t(handlers::blockchain_blocks_print) },
+        {"size", BaseOptionHandler_t(handlers::size_print) }
     }; 
 
     BlockChain_t BlockChain = {
         {0, "fromini", 0, 0}
     };
 
-    // fmt::print("fro: {}", BlockChain.begin()->block_hash_get());
 
     handlers::print_all_available_options(DataOptions, BlockChainOptions);
 

@@ -31,4 +31,5 @@ namespace handlers
 
     void blockchain_blocks_print(BlockChain_t& BlockChain);
     void blockchain_block_modify(BlockChain_t& BlockChain);
+    void size_print(BlockChain_t& BlockChain);
 }

@@ -4,6 +4,11 @@
 namespace handlers 
 {
 
+    void size_print(BlockChain_t& BlockChain)
+    {
+        fmt::print("Blockchain size: {}", BlockChain.size());
+    }
+
     void new_block_add(BlockChain_t& BlockChain)
     {
 
@@ -33,7 +38,7 @@ namespace handlers
         
         while(1)
         {
-            Block BlockToAdd(BlockChain.rbegin()->block_hash_get(), data, logic_puzzle_level, nonce);
+            Block BlockToAdd(BlockChain.latest_block_get().block_hash_get(), data, logic_puzzle_level, nonce);
             
             if(Block::check_logic_puzzle_level_correctness(BlockToAdd.block_hash_get(), logic_puzzle_level))
             {
@@ -42,8 +47,10 @@ namespace handlers
             }
             nonce = Distribution(Twister);
         }
-
-        BlockChain.push_back(Block(BlockChain.rbegin()->block_hash_get(), data, logic_puzzle_level, nonce));
+        
+        Block BlockAdded = Block(BlockChain.latest_block_get().block_hash_get(), data, logic_puzzle_level, nonce);
+        
+        BlockChain.block_add(BlockAdded);
         fmt::print(fg(fmt::color::green), "Block added\n");        
     }
 
@@ -63,20 +70,20 @@ namespace handlers
             return;
         }
 
-        auto it = BlockChain.rbegin() + block_to_modify;
+        auto BlockToModify = BlockChain.nth_block_get(block_to_modify);
 
         std::string BlockData;
         fmt::print("block data (press enter to skip): ");
         std::getline(std::cin, BlockData);
 
         if(BlockData.length())
-            it->data_set(BlockData);
+            BlockToModify.data_set(BlockData);
 
     }
 
     void blockchain_blocks_print(BlockChain_t& BlockChain)
     {
-        auto CurrentBlock = BlockChain.rbegin();
+        auto CurrentBlock = BlockChain.latest_block_get();
 
         fmt::print("\n");
         int data_length = 0;
@@ -84,10 +91,10 @@ namespace handlers
         while(1)
         {
             // data_length = CurrentBlock->data_get().length() > 40 ? CurrentBlock->data_get().length() : 40;
-            data_length = data_length > (std::string("data: ") + CurrentBlock->data_get()).length() ? 
-                data_length : ((std::string("data: ") + CurrentBlock->data_get()).length() > 40) ? (std::string("data: ") + CurrentBlock->data_get()).length()  : 40;
+            data_length = data_length > (std::string("data: ") + CurrentBlock.data_get()).length() ? 
+                data_length : ((std::string("data: ") + CurrentBlock.data_get()).length() > 40) ? (std::string("data: ") + CurrentBlock.data_get()).length()  : 40;
 
-            bool is_valid = CurrentBlock->is_valid();
+            bool is_valid = CurrentBlock.is_valid();
 
             for(int i = 0; i < data_length + 2; i++)
                 fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red), "-");
@@ -97,7 +104,7 @@ namespace handlers
 
             {
                 std::stringstream ss;
-                ss << std::string("block hash: ") << "0x" << std::hex << CurrentBlock->block_hash_get();
+                ss << std::string("block hash: ") << "0x" << std::hex << CurrentBlock.block_hash_get();
                 fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red),"|");
                 fmt::print("{}", ss.str());
 
@@ -110,7 +117,7 @@ namespace handlers
             /////////////////////PREVIOUS BLOCK HASH//////////////////////////
             {
                 std::stringstream ss;
-                ss << std::string("previous block hash: ") << "0x" << std::hex << CurrentBlock->previous_block_hash_get();
+                ss << std::string("previous block hash: ") << "0x" << std::hex << CurrentBlock.previous_block_hash_get();
                 fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red),"|");
                 fmt::print("{}", ss.str()); 
 
@@ -123,7 +130,7 @@ namespace handlers
             /////////////////////////////NONCE///////////////////////////////
             {
                 std::stringstream ss;
-                ss << std::string("nonce: ") << "0x" <<  std::hex << CurrentBlock->nonce_get();
+                ss << std::string("nonce: ") << "0x" <<  std::hex << CurrentBlock.nonce_get();
                 fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red),"|");
                 fmt::print("{}", ss.str()); 
 
@@ -136,7 +143,7 @@ namespace handlers
             ///////////////////////LOGIC PUZZLE LEVEL////////////////////////
             {
                 std::stringstream ss;
-                ss << std::string("logic puzzle level: ") << std::dec << CurrentBlock->logic_puzzle_level_get();
+                ss << std::string("logic puzzle level: ") << std::dec << CurrentBlock.logic_puzzle_level_get();
                 fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red),"|");
                 fmt::print("{}", ss.str()); 
 
@@ -150,7 +157,7 @@ namespace handlers
 
             {
                 std::stringstream ss;
-                ss << std::string("data: ") << CurrentBlock->data_get();
+                ss << std::string("data: ") << CurrentBlock.data_get();
                 fmt::print(is_valid ? fg(fmt::color::green) : fg(fmt::color::red),"|");
                 fmt::print("{}", ss.str()); 
 
@@ -167,7 +174,7 @@ namespace handlers
             fmt::print("\n");
 
 
-            if(!CurrentBlock->previous_block_hash_get())
+            if(!CurrentBlock.previous_block_hash_get())
                 break;
 
             const char* arrow = "^|||||";
@@ -185,7 +192,7 @@ namespace handlers
                 fmt::print("\n");
             }
 
-            CurrentBlock++;
+            CurrentBlock = BlockChain.previous_block_get(CurrentBlock);
         }
         
         if(BlockChain.first_invalid_block_id_get() != BlockChain_t::NO_INVALID_BLOCKS)
