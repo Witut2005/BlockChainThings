@@ -15,6 +15,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(fmt)
 
-add_executable(block_test main.cpp ./blockchain/blockchain.cpp ./block/block.cpp ./options/data/handler.cpp ./options/blockchain/handler.cpp)  # Adding block.cpp
+find_package(OpenSSL REQUIRED)
 
-target_link_libraries(block_test PRIVATE fmt::fmt)
+add_executable(block_test main.cpp ./blockchain/blockchain.cpp ./signature/signature.cpp ./block/block.cpp ./options/data/handler.cpp ./options/blockchain/handler.cpp)  # Adding block.cpp
+
+target_link_libraries(block_test PRIVATE OpenSSL::SSL OpenSSL::Crypto fmt::fmt)

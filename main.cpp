@@ -12,8 +12,44 @@
 #include "./options/blockchain/handler.h"
 #include "./options/base_handler/base_option_handler.h"
 
+#include <openssl/x509v3.h> //x509 implementation for compatibility
+#include <openssl/bn.h> // 
+#include <openssl/asn1.h>
+#include <openssl/x509.h> // x509 implementation
+#include <openssl/x509_vfy.h> 
+#include <openssl/pem.h> // for reading certificates & keys
+#include <openssl/bio.h>
+
+#include "./signature/signature.h"
+
 int main(void)
 {
+    
+    // Initialize OpenSSL library
+    OpenSSL_add_all_algorithms();
+
+    // Create an EVP_PKEY key pair
+
+    auto evp_key = signature_keys_generate();
+
+    auto signature_ctx = signature_context_create();
+    signature_data_update(signature_ctx, "nicho", 5);
+
+    unsigned char signature[EVP_MAX_MD_SIZE];
+    unsigned int signature_len = 0;
+
+    if(signature_data_confirm(signature_ctx, signature, &signature_len, evp_key) == 1)
+        std::cout << "signature created" << std::endl;
+
+    auto signature_verification_ctx = signature_verification_context_create();
+    signature_verification_data_update(signature_verification_ctx, "nicho", 5);
+
+    if(signature_verification_data_confirm(signature_verification_ctx, signature, signature_len, signature_keys_generate()))
+        std::cout << "signature ok" << std::endl;
+    else
+        std::cerr << "serio?" << std::endl;
+
+    while(1);
 
     std::vector<std::string> Data;
 
